@@ -1,29 +1,40 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { View, Text } from "react-native"; // ✅ Import nécessaire
+
 import TodoListScreen from "../screens/TodoListScreen";
 import TodoDetailsScreen from "../screens/TodoDetailsScreen";
+import HomeScreen from "../screens/HomeScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import NativeStack from "./NativeStack";
 
 const Drawer = createDrawerNavigator();
 
 export default function AppDrawer() {
   return (
-    <Drawer.Navigator initialRouteName="TodoList">
-      {/* ✅ PAS de texte hors composant */}
-      <Drawer.Screen 
-        name="TodoList" 
+    <Drawer.Navigator initialRouteName="Mes tâches">
+      {/* 📋 TODOS */}
+      <Drawer.Screen
+        name="Mes tâches"
         component={TodoListScreen}
-        options={{ 
-          title: "Mes tâches",
-          drawerLabel: "Liste des tâches" // ✅ Props, pas du JSX
-        }}
+        options={{ drawerLabel: "Liste des tâches" }}
       />
-      {/* ✅ Cache l'écran Détails du drawer */}
-      <Drawer.Screen 
-        name="Détails" 
+
+      {/* ❌ Caché du Drawer */}
+      <Drawer.Screen
+        name="Détails"
         component={TodoDetailsScreen}
-        options={{ 
-          drawerItemStyle: { display: 'none' }
-        }}
+        options={{ drawerItemStyle: { display: "none" } }}
+      />
+
+      {/* 🏠 HOME */}
+      <Drawer.Screen name="Accueil" component={HomeScreen} />
+
+      {/* 👤 PROFIL */}
+      <Drawer.Screen name="Profil" component={ProfileScreen} />
+
+      {/* 📱 NATIF */}
+      <Drawer.Screen
+        name="Fonctionnalités natives"
+        component={NativeStack}
       />
     </Drawer.Navigator>
   );

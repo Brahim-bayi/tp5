@@ -1,23 +1,33 @@
-import React, { createContext, useState } from 'react';
-import { View, Text } from 'react-native'; // ✅ Importe Text
+import { createContext, useContext, useEffect, useState } from "react";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../services/firebase";
 
-export const AuthContext = createContext();
+// Création du contexte
+const AuthContext = createContext();
 
-export default function AuthProvider({ children }) {
+// Provider
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const login = () => {
-    setUser({ id: 1, name: 'Utilisateur Test' });
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, []);
+
+  const logout = async () => {
+    await signOut(auth);
   };
 
-  const logout = () => {
-    setUser(null);
-  };
-
-  // ✅ NE PAS mettre de texte ici directement
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
+    <AuthContext.Provider value={{ user, loading, logout }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 }
+
+// Hook personnalisé
+export const useAuth = () => useContext(AuthContext);

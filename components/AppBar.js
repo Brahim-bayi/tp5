@@ -2,17 +2,26 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 export default function AppBar({ title }) {
   const { logout } = useContext(AuthContext);
 
   return (
-    <View style={styles.bar}>
-      <Text style={styles.title}>{title}</Text>
-
-      <TouchableOpacity onPress={logout}>
-        <Ionicons name="log-out-outline" size={28} />
-      </TouchableOpacity>
+    <View
+      style={{
+        padding: 15,
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#2f80ed",
+      }}
+    >
+      {back && (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={{ color: "#fff", marginRight: 10 }}>⬅</Text>
+        </TouchableOpacity>
+      )}
+      <Text style={{ color: "#fff", fontSize: 18 }}>{title}</Text>
     </View>
   );
 }

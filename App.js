@@ -3,20 +3,21 @@ import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { initDB } from "./services/database"; 
 import { ThemeProvider, ThemeContext } from "./context/ThemeContext"; 
 import TodoListOfflineScreen from "./screens/TodoListOfflineScreen"; 
- 
+import { AuthProvider } from "./context/AuthContext";
+import AppStack from "./navigation/AppStack";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 function MainApp() {  const { theme } = useContext(ThemeContext); 
  
- return ( 
-   <View 
-     style={[ 
-       styles.container, 
-       theme === "dark" ? styles.dark : styles.light, 
-     ]} 
-   > 
-     <TodoListOfflineScreen /> 
-   </View> 
- ); 
-} 
+  return (
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <AppStack />
+        </AuthProvider>
+      </ThemeProvider>
+    </SafeAreaProvider>
+  );
+}
  
 export default function App() { 
  const [dbReady, setDbReady] = useState(false); 
